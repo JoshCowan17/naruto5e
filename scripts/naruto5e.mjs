@@ -49,35 +49,35 @@ const JUTSU_CLASSIFICATIONS = {
  */
 const SPECIAL_MECHANICS = {
   // Elemental mechanics (for ninjutsu)
-  "ignite": {
+  "burned": {
     id: "ignite",
     label: "Ignite",
     element: "fire",
-    description: "" // To be filled from sourcebook
+    description: "A condition that lasts up to a minute. A creature takes 1d8 fire damage for each stack (up to 5) at the start of their turn." // To be filled from sourcebook
   },
-  "drench": {
-    id: "drench",
-    label: "Drench",
+  "near": {
+    id: "near",
+    label: "Near",
     element: "water",
-    description: "" // To be filled from sourcebook
+    description: "If near a body of water or an effect subsituting this, you can bolster your jutsu and use it to greater effect." // To be filled from sourcebook
   },
-  "gale": {
-    id: "gale",
-    label: "Gale",
+  "swirl;": {
+    id: "swirl",
+    label: "Swirld",
     element: "wind",
-    description: "" // To be filled from sourcebook
+    description: "Some Wind release jutsu will mention that they cause Swirl, when this happens, Creatures who would fail their Saving Throw, spreads all Elemental conditions currently affecting them around to all creatures, excluding the caster within 5 feet of them. Creatures hostile to the caster within 5 feet of the failing one gains 1 rank of all elemental conditions currently affecting it." // To be filled from sourcebook
   },
-  "fortify": {
-    id: "fortify",
-    label: "Fortify",
+  "quake shards": {
+    id: "quake shards",
+    label: "Quake Shards",
     element: "earth",
-    description: "" // To be filled from sourcebook
+    description: "Some Earth Release Jutsu create or interact with Quake Shards, gaining unique benefits and allowing for synergy with other Earth Release Jutsu, as long as the Quake Shard was created by you! Also, all structures and Constructs made by a Ninjutsu with the Earth Release Keyword have Resistance to Cold Damage and Vulnerability to Lightning Damage, even if the jutsu does not specifically state this, including creatures that temporarily count as Constructs. While Constructs made to intercept damage also have these Vulnerabilities and Resistances, they only apply to the Construct, any penetrating damage is taken as normal." // To be filled from sourcebook
   },
   "overcharge": {
     id: "overcharge",
     label: "Overcharge",
     element: "lightning",
-    description: "" // To be filled from sourcebook
+    description: "The Jutsu can be overcharged to use your bonus action or action. And sometimes add an additional effect." // To be filled from sourcebook
   },
   // Non-elemental / other classification mechanics can be added here
   "none": {
