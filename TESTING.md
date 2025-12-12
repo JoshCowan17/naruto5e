@@ -46,9 +46,46 @@ This guide will help you test the character sheet functionality of the Naruto 5e
    naruto5e | Character sheet modifications complete
    ```
 
-### Step 3: Check the Ninja Class Section
+### Step 3: Check the Clan Section
 
-The character sheet should now have a **Ninja Class** section, which should include:
+The character sheet should have a **Clan** section in the Details/Biography tab with:
+
+- **Clan Name**: Text input for clan name (e.g., Uchiha, Hyuga)
+- **Kekkei Genkai**: Text input for bloodline ability
+- **Clan Description**: Textarea for clan history and details
+
+**Test Actions:**
+1. Navigate to the **Details** or **Biography** tab
+2. You should see the Clan section at the top with earth-tone styling
+3. Fill in the fields:
+   - **Clan Name**: "Uchiha"
+   - **Kekkei Genkai**: "Sharingan"
+   - **Clan Description**: "The Uchiha clan was known for their powerful Sharingan..."
+4. Close and reopen the character sheet
+5. Values should be persisted
+
+### Step 4: Check the Ninja Background Section
+
+Below the Clan section, you should see a **Ninja Background** section with:
+
+- **Ambition**: What drives your character to greatness
+- **Drive**: What motivates your character day-to-day
+- **Goals**: What your character hopes to achieve
+- **Fears**: What your character fears most
+
+**Test Actions:**
+1. Still in the Details/Biography tab, scroll down to the Background section
+2. Fill in the narrative fields:
+   - **Ambition**: "To become the strongest shinobi in the village"
+   - **Drive**: "To prove myself worthy of my clan's legacy"
+   - **Goals**: "Master all fire release techniques and awaken the Mangekyo Sharingan"
+   - **Fears**: "Losing my loved ones and failing to protect the village"
+3. Close and reopen the character sheet
+4. Values should be saved
+
+### Step 5: Check the Ninja Class Section
+
+The character sheet should now have a **Ninja Class** section in the Features tab, which should include:
 
 - **Class Selection**: Dropdown to select ninja class (e.g., Ninjutsu Specialist)
 - **Subclass Selection**: Dropdown to select subclass (e.g., Lightning Breaker)
@@ -64,7 +101,7 @@ The character sheet should now have a **Ninja Class** section, which should incl
 6. Set the chakra values (e.g., Current: 10, Max: 20)
 7. The chakra bar should fill proportionally
 
-### Step 4: Check the Known Jutsu Section
+### Step 6: Check the Known Jutsu Section
 
 The character sheet should have a **Known Jutsu** section with:
 
@@ -98,12 +135,12 @@ The character sheet should have a **Known Jutsu** section with:
    - Chakra cost (5 CP)
    - Use button (hand sparkles icon)
 
-### Step 5: Test Jutsu Interaction
+### Step 7: Test Jutsu Interaction
 
 1. Click on the jutsu item (not the use button) - It should open the jutsu's item sheet
 2. Click the **use button** (hand sparkles icon) - It should attempt to cast the jutsu (using the DND5e spell system)
 
-### Step 6: Verify Styling
+### Step 8: Verify Styling
 
 The character sheet should have:
 
@@ -178,6 +215,8 @@ naruto5e | Initializing Naruto 5e Module
 naruto5e | Naruto 5e Module Initialized
 naruto5e | Naruto 5e Module Ready
 naruto5e | Rendering character sheet for Test Ninja
+naruto5e | Injecting clan section
+naruto5e | Injecting background section
 naruto5e | Injecting ninja class section
 naruto5e | Injecting jutsu section
 naruto5e | Character sheet modifications complete
