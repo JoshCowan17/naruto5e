@@ -89,19 +89,22 @@ naruto5e/
 | A-Rank | 4th Level | 11 |
 | S-Rank | 5th Level | 14 |
 
-### Chakra Natures & Overcharge
+### Special Mechanics
 
-Each elemental nature has a unique Overcharge ability:
+Each jutsu can have a special mechanic slot. Elemental ninjutsu default to their element's mechanic, but any jutsu can override this.
 
-| Nature | Overcharge | Effect |
-|--------|------------|--------|
-| Fire (Katon) | Ignite | Target catches fire for ongoing damage |
-| Water (Suiton) | Drench | Target gains lightning vulnerability, fire resistance |
-| Wind (Futon) | Gale | Pushback and increased damage |
-| Earth (Doton) | Fortify | Temporary HP or difficult terrain |
-| Lightning (Raiton) | Overcharge | Bonus speed, attack, and crit range |
-| Yin (Inton) | Illusion | Disadvantage on saves to disbelieve |
-| Yang (Yoton) | Vitality | Additional healing effects |
+| Element | Default Mechanic |
+|---------|------------------|
+| Fire (Katon) | Ignite |
+| Water (Suiton) | Drench |
+| Wind (Futon) | Gale |
+| Earth (Doton) | Fortify |
+| Lightning (Raiton) | Overcharge |
+
+**Usage:** Set `specialMechanic` in jutsu flags to:
+- `"default"` - Uses element's default mechanic
+- `"ignite"`, `"drench"`, `"gale"`, `"fortify"`, `"overcharge"` - Specific mechanic
+- `"none"` - No special mechanic (for non-elemental jutsu)
 
 ### Components
 

@@ -43,69 +43,108 @@ const JUTSU_CLASSIFICATIONS = {
 };
 
 /**
- * Chakra nature types with their overcharge mechanics
+ * Special Mechanics - Element-specific bonus abilities that can be applied to jutsu
+ * Each jutsu can have a special mechanic slot that references one of these
+ * Use Bonus Action or Reaction to activate when casting the jutsu
+ */
+const SPECIAL_MECHANICS = {
+  // Elemental mechanics (for ninjutsu)
+  "ignite": {
+    id: "ignite",
+    label: "Ignite",
+    element: "fire",
+    description: "" // To be filled from sourcebook
+  },
+  "drench": {
+    id: "drench",
+    label: "Drench",
+    element: "water",
+    description: "" // To be filled from sourcebook
+  },
+  "gale": {
+    id: "gale",
+    label: "Gale",
+    element: "wind",
+    description: "" // To be filled from sourcebook
+  },
+  "fortify": {
+    id: "fortify",
+    label: "Fortify",
+    element: "earth",
+    description: "" // To be filled from sourcebook
+  },
+  "overcharge": {
+    id: "overcharge",
+    label: "Overcharge",
+    element: "lightning",
+    description: "" // To be filled from sourcebook
+  },
+  // Non-elemental / other classification mechanics can be added here
+  "none": {
+    id: "none",
+    label: "None",
+    element: null,
+    description: ""
+  }
+};
+
+/**
+ * Map chakra natures to their default special mechanic
+ */
+const NATURE_MECHANIC_MAP = {
+  "fire": "ignite",
+  "water": "drench",
+  "wind": "gale",
+  "earth": "fortify",
+  "lightning": "overcharge",
+  "non-elemental": "none",
+  "yin": "none",
+  "yang": "none"
+};
+
+/**
+ * Chakra nature types
  */
 const CHAKRA_NATURES = {
   "non-elemental": {
     label: "Non-Elemental",
     icon: "icons/magic/symbols/question-stone-yellow.webp",
-    overcharge: null
+    defaultMechanic: "none"
   },
   "fire": {
     label: "Fire Release (Katon)",
     icon: "icons/magic/fire/flame-burning-hand-red.webp",
-    overcharge: {
-      name: "Ignite",
-      description: "When you cast this jutsu with its listed casting time, you can spend your Bonus Action or Reaction to overcharge its effects. The target catches fire, taking additional fire damage at the start of each of its turns."
-    }
+    defaultMechanic: "ignite"
   },
   "water": {
     label: "Water Release (Suiton)",
     icon: "icons/magic/water/wave-water-blue.webp",
-    overcharge: {
-      name: "Drench",
-      description: "When you cast this jutsu with its listed casting time, you can spend your Bonus Action or Reaction to overcharge its effects. The target becomes soaked, gaining vulnerability to lightning damage and resistance to fire damage until the end of their next turn."
-    }
+    defaultMechanic: "drench"
   },
   "wind": {
     label: "Wind Release (Futon)",
     icon: "icons/magic/air/wind-swirl-gray.webp",
-    overcharge: {
-      name: "Gale",
-      description: "When you cast this jutsu with its listed casting time, you can spend your Bonus Action or Reaction to overcharge its effects. The target is pushed back and the jutsu's damage is increased."
-    }
+    defaultMechanic: "gale"
   },
   "earth": {
     label: "Earth Release (Doton)",
     icon: "icons/magic/earth/rock-boulder-brown.webp",
-    overcharge: {
-      name: "Fortify",
-      description: "When you cast this jutsu with its listed casting time, you can spend your Bonus Action or Reaction to overcharge its effects. You gain temporary hit points or create difficult terrain."
-    }
+    defaultMechanic: "fortify"
   },
   "lightning": {
     label: "Lightning Release (Raiton)",
     icon: "icons/magic/lightning/bolt-strike-blue.webp",
-    overcharge: {
-      name: "Overcharge",
-      description: "When you cast this jutsu with its listed casting time, you can spend your Bonus Action or Reaction to overcharge its effects. The jutsu evolves in power, gaining bonus speed, attack bonus, and increased critical threat range."
-    }
+    defaultMechanic: "overcharge"
   },
   "yin": {
     label: "Yin Release (Inton)",
     icon: "icons/magic/unholy/silhouette-evil-horned-giant.webp",
-    overcharge: {
-      name: "Illusion",
-      description: "When you cast this jutsu with its listed casting time, you can spend your Bonus Action or Reaction to overcharge its effects. The illusion becomes more convincing, imposing disadvantage on saving throws to disbelieve."
-    }
+    defaultMechanic: "none"
   },
   "yang": {
     label: "Yang Release (Yoton)",
     icon: "icons/magic/holy/angel-winged-humanoid-yellow.webp",
-    overcharge: {
-      name: "Vitality",
-      description: "When you cast this jutsu with its listed casting time, you can spend your Bonus Action or Reaction to overcharge its effects. The technique provides additional healing or life force manipulation."
-    }
+    defaultMechanic: "none"
   }
 };
 
@@ -190,6 +229,27 @@ const HAND_SEALS = {
 };
 
 /**
+ * Get the special mechanic for a jutsu based on its element or override
+ * @param {Object} jutsuFlags - The naruto5e flags on the jutsu item
+ * @returns {Object|null} The special mechanic configuration
+ */
+function getSpecialMechanic(jutsuFlags) {
+  // If jutsu has a specific mechanic override, use that
+  if (jutsuFlags.specialMechanic && jutsuFlags.specialMechanic !== "default") {
+    return SPECIAL_MECHANICS[jutsuFlags.specialMechanic] || null;
+  }
+
+  // Otherwise, get the default mechanic for the element
+  const nature = jutsuFlags.chakraNature;
+  if (nature && CHAKRA_NATURES[nature]) {
+    const defaultMechanic = CHAKRA_NATURES[nature].defaultMechanic;
+    return SPECIAL_MECHANICS[defaultMechanic] || null;
+  }
+
+  return null;
+}
+
+/**
  * Hook that runs when Foundry is initialized
  */
 Hooks.once('init', async function() {
@@ -205,6 +265,8 @@ Hooks.once('init', async function() {
     jutsuClassifications: JUTSU_CLASSIFICATIONS,
     jutsuComponents: JUTSU_COMPONENTS,
     jutsuKeywords: JUTSU_KEYWORDS,
+    specialMechanics: SPECIAL_MECHANICS,
+    natureMechanicMap: NATURE_MECHANIC_MAP,
     summoningAnimals: SUMMONING_ANIMALS,
     ninjaRanks: NINJA_RANKS,
     handSeals: HAND_SEALS,
@@ -302,6 +364,10 @@ function registerHandlebarsHelpers() {
 
   Handlebars.registerHelper('handSeal', function(seal) {
     return HAND_SEALS[seal] || seal;
+  });
+
+  Handlebars.registerHelper('specialMechanic', function(mechanicId) {
+    return SPECIAL_MECHANICS[mechanicId]?.label || mechanicId;
   });
 }
 
@@ -410,6 +476,7 @@ function formatJutsuChat(jutsu) {
   const nature = CHAKRA_NATURES[flags.chakraNature];
   const classification = JUTSU_CLASSIFICATIONS[flags.classification];
   const rank = JUTSU_RANKS[flags.rank];
+  const mechanic = getSpecialMechanic(flags);
 
   return `
     <div class="jutsu-card">
@@ -431,9 +498,9 @@ function formatJutsuChat(jutsu) {
         <div class="jutsu-description">
           ${jutsu.system?.description?.value || ''}
         </div>
-        ${nature?.overcharge ? `
-          <div class="jutsu-overcharge">
-            <strong>${nature.overcharge.name}.</strong> ${nature.overcharge.description}
+        ${mechanic && mechanic.id !== 'none' ? `
+          <div class="jutsu-special-mechanic">
+            <strong>${mechanic.label}.</strong> ${mechanic.description || '(Special mechanic effect)'}
           </div>
         ` : ''}
       </div>
@@ -450,9 +517,12 @@ export {
   CHAKRA_NATURES,
   JUTSU_COMPONENTS,
   JUTSU_KEYWORDS,
+  SPECIAL_MECHANICS,
+  NATURE_MECHANIC_MAP,
   SUMMONING_ANIMALS,
   NINJA_RANKS,
   HAND_SEALS,
+  getSpecialMechanic,
   calculateChakraCost,
   formatJutsuChat
 };
